@@ -1,0 +1,956 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 97,
+   "id": "06dfc825",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import json\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 120,
+   "id": "88f6abc8",
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "ModuleNotFoundError",
+     "evalue": "No module named 'graphviz'",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mModuleNotFoundError\u001b[0m                       Traceback (most recent call last)",
+      "Input \u001b[0;32mIn [120]\u001b[0m, in \u001b[0;36m<cell line: 12>\u001b[0;34m()\u001b[0m\n\u001b[1;32m     10\u001b[0m \u001b[38;5;28;01mfrom\u001b[39;00m \u001b[38;5;21;01msklearn\u001b[39;00m\u001b[38;5;21;01m.\u001b[39;00m\u001b[38;5;21;01mmodel_selection\u001b[39;00m \u001b[38;5;28;01mimport\u001b[39;00m GridSearchCV\n\u001b[1;32m     11\u001b[0m \u001b[38;5;28;01mfrom\u001b[39;00m \u001b[38;5;21;01msklearn\u001b[39;00m\u001b[38;5;21;01m.\u001b[39;00m\u001b[38;5;21;01mmetrics\u001b[39;00m \u001b[38;5;28;01mimport\u001b[39;00m mean_squared_error, r2_score\n\u001b[0;32m---> 12\u001b[0m \u001b[38;5;28;01mimport\u001b[39;00m \u001b[38;5;21;01mgraphviz\u001b[39;00m \n\u001b[1;32m     13\u001b[0m \u001b[38;5;28;01mfrom\u001b[39;00m \u001b[38;5;21;01msklearn\u001b[39;00m \u001b[38;5;28;01mimport\u001b[39;00m tree\n",
+      "\u001b[0;31mModuleNotFoundError\u001b[0m: No module named 'graphviz'"
+     ]
+    }
+   ],
+   "source": [
+    "import pandas as pd\n",
+    "from sklearn.pipeline import Pipeline\n",
+    "from sklearn.impute import SimpleImputer\n",
+    "from sklearn.preprocessing import StandardScaler\n",
+    "from sklearn.decomposition import PCA\n",
+    "from sklearn.feature_selection import SelectKBest, f_regression\n",
+    "from sklearn.ensemble import RandomForestRegressor\n",
+    "from sklearn.tree import DecisionTreeRegressor\n",
+    "from sklearn.linear_model import LinearRegression\n",
+    "from sklearn.model_selection import GridSearchCV\n",
+    "from sklearn.metrics import mean_squared_error, r2_score\n",
+    "import graphviz \n",
+    "from sklearn import tree"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 121,
+   "id": "5c6bb994",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import os"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 122,
+   "id": "69c7e990",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def current_path():\n",
+    "    print(\"/Users/vaibhavgarg/Downloads/CONFIDENTIAL_ Summer Internship Recruitment Process (1)/Screening Test - DS\")\n",
+    "    print(os.getcwd())\n",
+    "    print()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 123,
+   "id": "a2c9f4b6",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Load the JSON configuration file\n",
+    "with open('file.json') as f:\n",
+    "    config = json.load(f)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 124,
+   "id": "89c33236",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<_io.TextIOWrapper name='file.json' mode='r' encoding='UTF-8'>"
+      ]
+     },
+     "execution_count": 124,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "f\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 125,
+   "id": "b525ae8e",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<_io.TextIOWrapper name='file.json' mode='r' encoding='UTF-8'>\n"
+     ]
+    }
+   ],
+   "source": [
+    "print (f)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 126,
+   "id": "eb991891",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "myjsonfile=open('file.json')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 127,
+   "id": "3a7f8a3f",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'{\"\\\\ufeff{\\\\n    \\\\\"session_name\\\\\": \\\\\"test\\\\\",\\\\n    \\\\\"session_description\\\\\": \\\\\"test\\\\\",\\\\n    \\\\\"design_state_data\\\\\": {\\\\n\\\\n      \\\\\"session_info\\\\\" : {\\\\n        \\\\\"project_id\\\\\": \\\\\"1\\\\\",\\\\n        \\\\\"experiment_id\\\\\": \\\\\"kkkk-11\\\\\",\\\\n        \\\\\"dataset\\\\\":\\\\\"iris_modified.csv\\\\\",\\\\n        \\\\\"session_name\\\\\": \\\\\"test\\\\\",\\\\n        \\\\\"session_description\\\\\": \\\\\"test\\\\\"\\\\n        },\\\\n\\\\n      \\\\\"target\\\\\": {\\\\n        \\\\\"prediction_type\\\\\": \\\\\"Regression\\\\\",\\\\n        \\\\\"target\\\\\": \\\\\"petal_width\\\\\",\\\\n        \\\\\"type\\\\\":\\\\\"regression\\\\\",\\\\n        \\\\\"partitioning\\\\\": true\\\\n      },\\\\n      \\\\\"train\\\\\": {\\\\n        \\\\\"policy\\\\\": \\\\\"Split the dataset\\\\\",\\\\n        \\\\\"time_variable\\\\\": \\\\\"sepal_length\\\\\",\\\\n        \\\\\"sampling_method\\\\\": \\\\\"No sampling(whole data)\\\\\",\\\\n        \\\\\"split\\\\\": \\\\\"Randomly\\\\\",\\\\n        \\\\\"k_fold\\\\\": false,\\\\n        \\\\\"train_ratio\\\\\": 0,\\\\n        \\\\\"random_seed\\\\\": 0\\\\n      },\\\\n      \\\\\"metrics\\\\\": {\\\\n        \\\\\"optomize_model_hyperparameters_for\\\\\": \\\\\"AUC\\\\\",\\\\n        \\\\\"optimize_threshold_for\\\\\": \\\\\"F1 Score\\\\\",\\\\n        \\\\\"compute_lift_at\\\\\": 0,\\\\n        \\\\\"cost_matrix_gain_for_true_prediction_true_result\\\\\": 1,\\\\n        \\\\\"cost_matrix_gain_for_true_prediction_false_result\\\\\": 0,\\\\n        \\\\\"cost_matrix_gain_for_false_prediction_true_result\\\\\": 0,\\\\n        \\\\\"cost_matrix_gain_for_false_prediction_false_result\\\\\": 0\\\\n      },\\\\n      \\\\\"feature_handling\\\\\": {\\\\n        \\\\\"sepal_length\\\\\": {\\\\n          \\\\\"feature_name\\\\\": \\\\\"sepal_length\\\\\",\\\\n          \\\\\"is_selected\\\\\": true,\\\\n          \\\\\"feature_variable_type\\\\\": \\\\\"numerical\\\\\",\\\\n          \\\\\"feature_details\\\\\": {\\\\n            \\\\\"numerical_handling\\\\\": \\\\\"Keep as regular numerical feature\\\\\",\\\\n            \\\\\"rescaling\\\\\": \\\\\"No rescaling\\\\\",\\\\n            \\\\\"make_derived_feats\\\\\": false,\\\\n            \\\\\"missing_values\\\\\": \\\\\"Impute\\\\\",\\\\n            \\\\\"impute_with\\\\\": \\\\\"Average of values\\\\\",\\\\n            \\\\\"impute_value\\\\\": 0\\\\n          }\\\\n        },\\\\n        \\\\\"sepal_width\\\\\": {\\\\n          \\\\\"feature_name\\\\\": \\\\\"sepal_width\\\\\",\\\\n          \\\\\"is_selected\\\\\": true,\\\\n          \\\\\"feature_variable_type\\\\\": \\\\\"numerical\\\\\",\\\\n          \\\\\"feature_details\\\\\": {\\\\n            \\\\\"numerical_handling\\\\\": \\\\\"Keep as regular numerical feature\\\\\",\\\\n            \\\\\"rescaling\\\\\": \\\\\"No rescaling\\\\\",\\\\n            \\\\\"make_derived_feats\\\\\": false,\\\\n            \\\\\"missing_values\\\\\": \\\\\"Impute\\\\\",\\\\n            \\\\\"impute_with\\\\\": \\\\\"custom\\\\\",\\\\n            \\\\\"impute_value\\\\\": -1\\\\n          }\\\\n        },\\\\n        \\\\\"petal_length\\\\\": {\\\\n          \\\\\"feature_name\\\\\": \\\\\"petal_length\\\\\",\\\\n          \\\\\"is_selected\\\\\": true,\\\\n          \\\\\"feature_variable_type\\\\\": \\\\\"numerical\\\\\",\\\\n          \\\\\"feature_details\\\\\": {\\\\n            \\\\\"numerical_handling\\\\\": \\\\\"Keep as regular numerical feature\\\\\",\\\\n            \\\\\"rescaling\\\\\": \\\\\"No rescaling\\\\\",\\\\n            \\\\\"make_derived_feats\\\\\": false,\\\\n            \\\\\"missing_values\\\\\": \\\\\"Impute\\\\\",\\\\n            \\\\\"impute_with\\\\\": \\\\\"Average of values\\\\\",\\\\n            \\\\\"impute_value\\\\\": 0\\\\n          }\\\\n        },\\\\n        \\\\\"petal_width\\\\\": {\\\\n          \\\\\"feature_name\\\\\": \\\\\"petal_width\\\\\",\\\\n          \\\\\"is_selected\\\\\": true,\\\\n          \\\\\"feature_variable_type\\\\\": \\\\\"numerical\\\\\",\\\\n          \\\\\"feature_details\\\\\": {\\\\n            \\\\\"numerical_handling\\\\\": \\\\\"Keep as regular numerical feature\\\\\",\\\\n            \\\\\"rescaling\\\\\": \\\\\"No rescaling\\\\\",\\\\n            \\\\\"make_derived_feats\\\\\": false,\\\\n            \\\\\"missing_values\\\\\": \\\\\"Impute\\\\\",\\\\n            \\\\\"impute_with\\\\\": \\\\\"custom\\\\\",\\\\n            \\\\\"impute_value\\\\\": -2\\\\n          }\\\\n        },\\\\n        \\\\\"species\\\\\": {\\\\n          \\\\\"feature_name\\\\\": \\\\\"species\\\\\",\\\\n          \\\\\"is_selected\\\\\": true,\\\\n          \\\\\"feature_variable_type\\\\\": \\\\\"text\\\\\",\\\\n          \\\\\"feature_details\\\\\": {\\\\n            \\\\\"text_handling\\\\\": \\\\\"Tokenize and hash\\\\\",\\\\n            \\\\\"hash_columns\\\\\": 0\\\\n          }\\\\n        }\\\\n      },\\\\n      \\\\\"feature_generation\\\\\": {\\\\n        \\\\\"linear_interactions\\\\\": [[\\\\\"petal_length\\\\\", \\\\\"sepal_width\\\\\"]],\\\\n        \\\\\"linear_scalar_type\\\\\": \\\\\"robust\\\\\",\\\\n        \\\\\"polynomial_interactions\\\\\": [\\\\n          \\\\\"petal_length/sepal_width\\\\\",\\\\n          \\\\\"petal_width/species\\\\\"\\\\n        ],\\\\n        \\\\\"explicit_pairwise_interactions\\\\\": [\\\\n          \\\\\"sepal_width/sepal_length\\\\\",\\\\n          \\\\\"petal_width/sepal_length\\\\\"\\\\n        ]\\\\n      },\\\\n      \\\\\"feature_reduction\\\\\": {\\\\n        \\\\\"feature_reduction_method\\\\\": \\\\\"Tree-based\\\\\",\\\\n        \\\\\"num_of_features_to_keep\\\\\": \\\\\"4\\\\\",\\\\n        \\\\\"num_of_trees\\\\\": \\\\\"5\\\\\",\\\\n        \\\\\"depth_of_trees\\\\\": \\\\\"6\\\\\"\\\\n      },\\\\n      \\\\\"hyperparameters\\\\\": {\\\\n        \\\\\"stratergy\\\\\": \\\\\"Grid Search\\\\\",\\\\n        \\\\\"shuffle_grid\\\\\": true,\\\\n        \\\\\"random_state\\\\\": 1,\\\\n        \\\\\"max_iterations\\\\\": 2,\\\\n        \\\\\"max_search_time\\\\\": 3,\\\\n        \\\\\"parallelism\\\\\": 5,\\\\n        \\\\\"cross_validation_stratergy\\\\\": \\\\\"Time-based K-fold(with overlap)\\\\\",\\\\n        \\\\\"num_of_folds\\\\\": 6,\\\\n        \\\\\"split_ratio\\\\\": 0,\\\\n        \\\\\"stratified\\\\\": true\\\\n      },\\\\n      \\\\\"weighting_stratergy\\\\\": {\\\\n        \\\\\"weighting_stratergy_method\\\\\": \\\\\"Sample weights\\\\\",\\\\n        \\\\\"weighting_stratergy_weight_variable\\\\\": \\\\\"petal_length\\\\\"\\\\n      },\\\\n      \\\\\"probability_calibration\\\\\": {\\\\n        \\\\\"probability_calibration_method\\\\\": \\\\\"Sigmoid - Platt Scaling\\\\\"\\\\n      },\\\\n      \\\\\"algorithms\\\\\": {\\\\n        \\\\\"RandomForestClassifier\\\\\": {\\\\n          \\\\\"model_name\\\\\": \\\\\"Random Forest Classifier\\\\\",\\\\n          \\\\\"is_selected\\\\\": false,\\\\n          \\\\\"min_trees\\\\\": 10,\\\\n          \\\\\"max_trees\\\\\": 30,\\\\n          \\\\\"feature_sampling_statergy\\\\\": \\\\\"Default\\\\\",\\\\n          \\\\\"min_depth\\\\\": 20,\\\\n          \\\\\"max_depth\\\\\": 30,\\\\n          \\\\\"min_samples_per_leaf_min_value\\\\\": 5,\\\\n          \\\\\"min_samples_per_leaf_max_value\\\\\": 50,\\\\n          \\\\\"parallelism\\\\\": 0\\\\n        },\\\\n        \\\\\"RandomForestRegressor\\\\\": {\\\\n          \\\\\"model_name\\\\\": \\\\\"Random Forest Regressor\\\\\",\\\\n          \\\\\"is_selected\\\\\": true,\\\\n          \\\\\"min_trees\\\\\": 10,\\\\n          \\\\\"max_trees\\\\\": 20,\\\\n          \\\\\"feature_sampling_statergy\\\\\": \\\\\"Default\\\\\",\\\\n          \\\\\"min_depth\\\\\": 20,\\\\n          \\\\\"max_depth\\\\\": 25,\\\\n          \\\\\"min_samples_per_leaf_min_value\\\\\": 5,\\\\n          \\\\\"min_samples_per_leaf_max_value\\\\\": 10,\\\\n          \\\\\"parallelism\\\\\": 0\\\\n        },\\\\n        \\\\\"GBTClassifier\\\\\": {\\\\n          \\\\\"model_name\\\\\": \\\\\"Gradient Boosted Trees\\\\\",\\\\n          \\\\\"is_selected\\\\\": false,\\\\n          \\\\\"num_of_BoostingStages\\\\\": [67, 89],\\\\n          \\\\\"feature_sampling_statergy\\\\\": \\\\\"Fixed number\\\\\",\\\\n          \\\\\"learningRate\\\\\": [],\\\\n          \\\\\"use_deviance\\\\\": true,\\\\n          \\\\\"use_exponential\\\\\": false,\\\\n          \\\\\"fixed_number\\\\\": 22,\\\\n          \\\\\"min_subsample\\\\\": 1,\\\\n          \\\\\"max_subsample\\\\\": 2,\\\\n          \\\\\"min_stepsize\\\\\":0.1,\\\\n          \\\\\"max_stepsize\\\\\":0.5, \\\\n          \\\\\"min_iter\\\\\":20,\\\\n          \\\\\"max_iter\\\\\":40,\\\\n          \\\\\"min_depth\\\\\":5,\\\\n          \\\\\"max_depth\\\\\":7\\\\n\\\\n        },\\\\n        \\\\\"GBTRegressor\\\\\": {\\\\n          \\\\\"model_name\\\\\": \\\\\"Gradient Boosted Trees\\\\\",\\\\n          \\\\\"is_selected\\\\\": false,\\\\n          \\\\\"num_of_BoostingStages\\\\\": [67, 89],\\\\n          \\\\\"feature_sampling_statergy\\\\\": \\\\\"Fixed number\\\\\",\\\\n          \\\\\"use_deviance\\\\\": true,\\\\n          \\\\\"use_exponential\\\\\": false,\\\\n          \\\\\"fixed_number\\\\\": 22,\\\\n          \\\\\"min_subsample\\\\\": 1,\\\\n          \\\\\"max_subsample\\\\\": 2,\\\\n          \\\\\"min_stepsize\\\\\":0.1,\\\\n          \\\\\"max_stepsize\\\\\":0.5, \\\\n          \\\\\"min_iter\\\\\":20,\\\\n          \\\\\"max_iter\\\\\":40,\\\\n          \\\\\"min_depth\\\\\":5,\\\\n          \\\\\"max_depth\\\\\":7\\\\n        },\\\\n        \\\\\"LinearRegression\\\\\": {\\\\n          \\\\\"model_name\\\\\": \\\\\"LinearRegression\\\\\",\\\\n          \\\\\"is_selected\\\\\": false,\\\\n          \\\\\"parallelism\\\\\": 2,\\\\n          \\\\\"min_iter\\\\\":30,\\\\n          \\\\\"max_iter\\\\\":50,\\\\n          \\\\\"min_regparam\\\\\":0.5,\\\\n          \\\\\"max_regparam\\\\\":0.8,\\\\n          \\\\\"min_elasticnet\\\\\":0.5,\\\\n          \\\\\"max_elasticnet\\\\\":0.8\\\\n        },\\\\n        \\\\\"LogisticRegression\\\\\": {\\\\n          \\\\\"model_name\\\\\": \\\\\"LogisticRegression\\\\\",\\\\n          \\\\\"is_selected\\\\\": false,\\\\n          \\\\\"parallelism\\\\\": 2,\\\\n          \\\\\"min_iter\\\\\":30,\\\\n          \\\\\"max_iter\\\\\":50,\\\\n          \\\\\"min_regparam\\\\\":0.5,\\\\n          \\\\\"max_regparam\\\\\":0.8,\\\\n          \\\\\"min_elasticnet\\\\\":0.5,\\\\n          \\\\\"max_elasticnet\\\\\":0.8\\\\n        },\\\\n        \\\\\"RidgeRegression\\\\\": {\\\\n          \\\\\"model_name\\\\\": \\\\\"RidgeRegression\\\\\",\\\\n          \\\\\"is_selected\\\\\": false,\\\\n          \\\\\"regularization_term\\\\\": \\\\\"Specify values to test\\\\\",\\\\n          \\\\\"min_iter\\\\\":30,\\\\n          \\\\\"max_iter\\\\\":50,\\\\n          \\\\\"min_regparam\\\\\":0.5,\\\\n          \\\\\"max_regparam\\\\\":0.8\\\\n        },\\\\n        \\\\\"LassoRegression\\\\\": {\\\\n          \\\\\"model_name\\\\\": \\\\\"Lasso Regression\\\\\",\\\\n          \\\\\"is_selected\\\\\": false,\\\\n          \\\\\"regularization_term\\\\\": \\\\\"Specify values to test\\\\\",\\\\n          \\\\\"min_iter\\\\\":30,\\\\n          \\\\\"max_iter\\\\\":50,\\\\n          \\\\\"min_regparam\\\\\":0.5,\\\\n          \\\\\"max_regparam\\\\\":0.8\\\\n        },\\\\n        \\\\\"ElasticNetRegression\\\\\": {\\\\n          \\\\\"model_name\\\\\": \\\\\"Lasso Regression\\\\\",\\\\n          \\\\\"is_selected\\\\\": false,\\\\n          \\\\\"regularization_term\\\\\": \\\\\"Specify values to test\\\\\",\\\\n          \\\\\"min_iter\\\\\":30,\\\\n          \\\\\"max_iter\\\\\":50,\\\\n          \\\\\"min_regparam\\\\\":0.5,\\\\n          \\\\\"max_regparam\\\\\":0.8,\\\\n          \\\\\"min_elasticnet\\\\\":0.5,\\\\n          \\\\\"max_elasticnet\\\\\":0.8\\\\n        },\\\\n        \\\\\"xg_boost\\\\\": {\\\\n          \\\\\"model_name\\\\\": \\\\\"XG Boost\\\\\",\\\\n          \\\\\"is_selected\\\\\": false,\\\\n          \\\\\"use_gradient_boosted_tree\\\\\": true,\\\\n          \\\\\"dart\\\\\": true,\\\\n          \\\\\"tree_method\\\\\": \\\\\"\\\\\",\\\\n          \\\\\"random_state\\\\\": 0,\\\\n          \\\\\"max_num_of_trees\\\\\": 0,\\\\n          \\\\\"early_stopping\\\\\": true,\\\\n          \\\\\"early_stopping_rounds\\\\\": 2,\\\\n          \\\\\"max_depth_of_tree\\\\\": [56, 89], \\\\n          \\\\\"learningRate\\\\\": [89, 76],\\\\n          \\\\\"l1_regularization\\\\\": [77],\\\\n          \\\\\"l2_regularization\\\\\": [78],\\\\n          \\\\\"gamma\\\\\": [68],\\\\n          \\\\\"min_child_weight\\\\\": [67],\\\\n          \\\\\"sub_sample\\\\\": [67],\\\\n          \\\\\"col_sample_by_tree\\\\\": [67],\\\\n          \\\\\"replace_missing_values\\\\\": false,\\\\n          \\\\\"parallelism\\\\\": 0\\\\n        },\\\\n        \\\\\"DecisionTreeRegressor\\\\\": {\\\\n          \\\\\"model_name\\\\\": \\\\\"Decision Tree\\\\\",\\\\n          \\\\\"is_selected\\\\\": false,\\\\n          \\\\\"min_depth\\\\\":4,\\\\n          \\\\\"max_depth\\\\\": 7,\\\\n          \\\\\"use_gini\\\\\": false,\\\\n          \\\\\"use_entropy\\\\\": true,\\\\n          \\\\\"min_samples_per_leaf\\\\\": [12, 6],\\\\n          \\\\\"use_best\\\\\": true,\\\\n          \\\\\"use_random\\\\\": true\\\\n        },\\\\n        \\\\\"DecisionTreeClassifier\\\\\": {\\\\n          \\\\\"model_name\\\\\": \\\\\"Decision Tree\\\\\",\\\\n          \\\\\"is_selected\\\\\": false,\\\\n          \\\\\"min_depth\\\\\":4,\\\\n          \\\\\"max_depth\\\\\": 7,\\\\n          \\\\\"use_gini\\\\\": false,\\\\n          \\\\\"use_entropy\\\\\": true,\\\\n          \\\\\"min_samples_per_leaf\\\\\": [12, 6],\\\\n          \\\\\"use_best\\\\\": true,\\\\n          \\\\\"use_random\\\\\": true\\\\n        },\\\\n        \\\\\"SVM\\\\\": {\\\\n          \\\\\"model_name\\\\\": \\\\\"Support Vector Machine\\\\\",\\\\n          \\\\\"is_selected\\\\\": false,\\\\n          \\\\\"linear_kernel\\\\\": true,\\\\n          \\\\\"rep_kernel\\\\\": true,\\\\n          \\\\\"polynomial_kernel\\\\\": true,\\\\n          \\\\\"sigmoid_kernel\\\\\": true,\\\\n          \\\\\"c_value\\\\\": [566, 79],\\\\n          \\\\\"auto\\\\\": true,\\\\n          \\\\\"scale\\\\\": true,\\\\n          \\\\\"custom_gamma_values\\\\\": true,\\\\n          \\\\\"tolerance\\\\\": 7,\\\\n          \\\\\"max_iterations\\\\\": 7\\\\n        },\\\\n        \\\\\"SGD\\\\\": {\\\\n          \\\\\"model_name\\\\\": \\\\\"Stochastic Gradient Descent\\\\\",\\\\n          \\\\\"is_selected\\\\\": false,\\\\n          \\\\\"use_logistics\\\\\": true,\\\\n          \\\\\"use_modified_hubber_loss\\\\\": false,\\\\n          \\\\\"max_iterations\\\\\": false,\\\\n          \\\\\"tolerance\\\\\": 56,\\\\n          \\\\\"use_l1_regularization\\\\\": \\\\\"on\\\\\",\\\\n          \\\\\"use_l2_regularization\\\\\": \\\\\"on\\\\\",\\\\n          \\\\\"use_elastic_net_regularization\\\\\": true,\\\\n          \\\\\"alpha_value\\\\\": [79, 56],\\\\n          \\\\\"parallelism\\\\\": 1\\\\n        },\\\\n        \\\\\"KNN\\\\\": {\\\\n          \\\\\"model_name\\\\\": \\\\\"KNN\\\\\",\\\\n          \\\\\"is_selected\\\\\": false,\\\\n          \\\\\"k_value\\\\\": [78],\\\\n          \\\\\"distance_weighting\\\\\": true,\\\\n          \\\\\"neighbour_finding_algorithm\\\\\": \\\\\"Automatic\\\\\",\\\\n          \\\\\"random_state\\\\\": 0,\\\\n          \\\\\"p_value\\\\\": 0\\\\n        },\\\\n        \\\\\"extra_random_trees\\\\\": {\\\\n          \\\\\"model_name\\\\\": \\\\\"Extra Random Trees\\\\\",\\\\n          \\\\\"is_selected\\\\\": false,\\\\n          \\\\\"num_of_trees\\\\\": [45, 489],\\\\n          \\\\\"feature_sampling_statergy\\\\\": \\\\\"Square root and Logarithm\\\\\",\\\\n          \\\\\"max_depth\\\\\": [12, 45],\\\\n          \\\\\"min_samples_per_leaf\\\\\": [78, 56],\\\\n          \\\\\"parallelism\\\\\": 3\\\\n        },\\\\n        \\\\\"neural_network\\\\\": {\\\\n          \\\\\"model_name\\\\\": \\\\\"Neural Network\\\\\",\\\\n          \\\\\"is_selected\\\\\": false,\\\\n          \\\\\"hidden_layer_sizes\\\\\": [67, 89],\\\\n          \\\\\"activation\\\\\": \\\\\"\\\\\",\\\\n          \\\\\"alpha_value\\\\\": 0,\\\\n          \\\\\"max_iterations\\\\\": 0,\\\\n          \\\\\"convergence_tolerance\\\\\": 0,\\\\n          \\\\\"early_stopping\\\\\": true,\\\\n          \\\\\"solver\\\\\": \\\\\"ADAM\\\\\",\\\\n          \\\\\"shuffle_data\\\\\": true,\\\\n          \\\\\"initial_learning_rate\\\\\": 0,\\\\n          \\\\\"automatic_batching\\\\\": true,\\\\n          \\\\\"beta_1\\\\\": 0,\\\\n          \\\\\"beta_2\\\\\": 0,\\\\n          \\\\\"epsilon\\\\\": 0,\\\\n          \\\\\"power_t\\\\\": 0,\\\\n          \\\\\"momentum\\\\\": 0,\\\\n          \\\\\"use_nesterov_momentum\\\\\": false\\\\n        }\\\\n      }\\\\n    }\\\\n  }\": null}'"
+      ]
+     },
+     "execution_count": 127,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "myjsonfile.read()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 128,
+   "id": "5a875f01",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "jsondata=myjsonfile"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 129,
+   "id": "2ea291d0",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<class '_io.TextIOWrapper'>\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(type(f))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 130,
+   "id": "72bb52bd",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<class '_io.TextIOWrapper'>\n"
+     ]
+    }
+   ],
+   "source": [
+    "print (type(myjasonfile))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 131,
+   "id": "ab466a31",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<class '_io.TextIOWrapper'>\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(type(jsondata))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7227c67b",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 132,
+   "id": "520bc692",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Prasing"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 133,
+   "id": "c67b6375",
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "TypeError",
+     "evalue": "'_io.TextIOWrapper' object is not subscriptable",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mTypeError\u001b[0m                                 Traceback (most recent call last)",
+      "Input \u001b[0;32mIn [133]\u001b[0m, in \u001b[0;36m<cell line: 1>\u001b[0;34m()\u001b[0m\n\u001b[0;32m----> 1\u001b[0m \u001b[38;5;28mprint\u001b[39m(\u001b[43mjasondata\u001b[49m\u001b[43m[\u001b[49m\u001b[38;5;124;43m'\u001b[39;49m\u001b[38;5;124;43msession_description\u001b[39;49m\u001b[38;5;124;43m'\u001b[39;49m\u001b[43m]\u001b[49m)\n",
+      "\u001b[0;31mTypeError\u001b[0m: '_io.TextIOWrapper' object is not subscriptable"
+     ]
+    }
+   ],
+   "source": [
+    "print(jasondata['session_description'])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 134,
+   "id": "31b43f2d",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "pipeline_steps = []"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 75,
+   "id": "9b9d3117",
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "KeyError",
+     "evalue": "<_io.TextIOWrapper name='file.json' mode='r' encoding='UTF-8'>",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mKeyError\u001b[0m                                  Traceback (most recent call last)",
+      "Input \u001b[0;32mIn [75]\u001b[0m, in \u001b[0;36m<cell line: 2>\u001b[0;34m()\u001b[0m\n\u001b[1;32m      1\u001b[0m \u001b[38;5;66;03m# Read target and type of regression to be run\u001b[39;00m\n\u001b[0;32m----> 2\u001b[0m target \u001b[38;5;241m=\u001b[39m \u001b[43mconfig\u001b[49m\u001b[43m[\u001b[49m\u001b[43mf\u001b[49m\u001b[43m]\u001b[49m\n\u001b[1;32m      3\u001b[0m regression_type \u001b[38;5;241m=\u001b[39m config[\u001b[38;5;124m'\u001b[39m\u001b[38;5;124mregression_type\u001b[39m\u001b[38;5;124m'\u001b[39m]\n",
+      "\u001b[0;31mKeyError\u001b[0m: <_io.TextIOWrapper name='file.json' mode='r' encoding='UTF-8'>"
+     ]
+    }
+   ],
+   "source": [
+    "# Read target and type of regression to be run\n",
+    "target = config[f]\n",
+    "regression_type = config['regression_type']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 50,
+   "id": "4da60e0d",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if 'feature_handling' in config:\n",
+    "    if 'scaling' in config['feature_handling']:\n",
+    "        pipeline_steps.append(('scaling', StandardScaler()))\n",
+    "    if 'feature_selection' in config['feature_handling']:\n",
+    "        pipeline_steps.append(('feature_selection', SelectKBest(f_classif, k=config['feature_handling']['feature_selection']['k'])))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 51,
+   "id": "c6780559",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Add feature generation step if present in the config\n",
+    "if 'feature_generation' in config:\n",
+    "    # Add code to generate features here\n",
+    "    pass"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 56,
+   "id": "0846fce2",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Add model building step using Grid Search if present in the config\n",
+    "if 'model_building' in config:\n",
+    "    model = RandomForestClassifier()\n",
+    "    params = config['model_building']['params']\n",
+    "    grid_search = GridSearchCV(model, params, cv=5)\n",
+    "    pipeline_steps.append(('grid_search', grid_search))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 58,
+   "id": "56d79299",
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "NameError",
+     "evalue": "name 'true' is not defined",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mNameError\u001b[0m                                 Traceback (most recent call last)",
+      "Input \u001b[0;32mIn [58]\u001b[0m, in \u001b[0;36m<cell line: 3>\u001b[0;34m()\u001b[0m\n\u001b[1;32m      1\u001b[0m j\u001b[38;5;241m=\u001b[39m {\n\u001b[1;32m      2\u001b[0m     \u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mdata\u001b[39m\u001b[38;5;124m\"\u001b[39m: {\n\u001b[1;32m      3\u001b[0m         \u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mX_train\u001b[39m\u001b[38;5;124m\"\u001b[39m: \u001b[38;5;241m.\u001b[39m\u001b[38;5;241m.\u001b[39m\u001b[38;5;241m.\u001b[39m,\n\u001b[1;32m      4\u001b[0m         \u001b[38;5;124m\"\u001b[39m\u001b[38;5;124my_train\u001b[39m\u001b[38;5;124m\"\u001b[39m: \u001b[38;5;241m.\u001b[39m\u001b[38;5;241m.\u001b[39m\u001b[38;5;241m.\u001b[39m,\n\u001b[1;32m      5\u001b[0m         \u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mX_test\u001b[39m\u001b[38;5;124m\"\u001b[39m: \u001b[38;5;241m.\u001b[39m\u001b[38;5;241m.\u001b[39m\u001b[38;5;241m.\u001b[39m,\n\u001b[1;32m      6\u001b[0m         \u001b[38;5;124m\"\u001b[39m\u001b[38;5;124my_test\u001b[39m\u001b[38;5;124m\"\u001b[39m: \u001b[38;5;241m.\u001b[39m\u001b[38;5;241m.\u001b[39m\u001b[38;5;241m.\u001b[39m\n\u001b[1;32m      7\u001b[0m     },\n\u001b[1;32m      8\u001b[0m     \u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mfeature_handling\u001b[39m\u001b[38;5;124m\"\u001b[39m: {\n\u001b[0;32m----> 9\u001b[0m         \u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mscaling\u001b[39m\u001b[38;5;124m\"\u001b[39m: \u001b[43mtrue\u001b[49m,\n\u001b[1;32m     10\u001b[0m         \u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mfeature_selection\u001b[39m\u001b[38;5;124m\"\u001b[39m: {\n\u001b[1;32m     11\u001b[0m             \u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mk\u001b[39m\u001b[38;5;124m\"\u001b[39m: \u001b[38;5;241m.\u001b[39m\u001b[38;5;241m.\u001b[39m\u001b[38;5;241m.\u001b[39m\n\u001b[1;32m     12\u001b[0m         }\n\u001b[1;32m     13\u001b[0m     },\n\u001b[1;32m     14\u001b[0m     \u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mfeature_generation\u001b[39m\u001b[38;5;124m\"\u001b[39m: {\n\u001b[1;32m     15\u001b[0m         \u001b[38;5;241m.\u001b[39m\u001b[38;5;241m.\u001b[39m\u001b[38;5;241m.\u001b[39m\n\u001b[1;32m     16\u001b[0m     },\n\u001b[1;32m     17\u001b[0m     \u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mmodel_building\u001b[39m\u001b[38;5;124m\"\u001b[39m: {\n\u001b[1;32m     18\u001b[0m         \u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mparams\u001b[39m\u001b[38;5;124m\"\u001b[39m: {\n\u001b[1;32m     19\u001b[0m             \u001b[38;5;241m.\u001b[39m\u001b[38;5;241m.\u001b[39m\u001b[38;5;241m.\u001b[39m\n\u001b[1;32m     20\u001b[0m         }\n\u001b[1;32m     21\u001b[0m     }\n\u001b[1;32m     22\u001b[0m }\n",
+      "\u001b[0;31mNameError\u001b[0m: name 'true' is not defined"
+     ]
+    }
+   ],
+   "source": [
+    "j= {\n",
+    "    \"data\": {\n",
+    "        \"X_train\": ...,\n",
+    "        \"y_train\": ...,\n",
+    "        \"X_test\": ...,\n",
+    "        \"y_test\": ...\n",
+    "    },\n",
+    "    \"feature_handling\": {\n",
+    "        \"scaling\": true,\n",
+    "        \"feature_selection\": {\n",
+    "            \"k\": ...\n",
+    "        }\n",
+    "    },\n",
+    "    \"feature_generation\": {\n",
+    "        ...\n",
+    "    },\n",
+    "    \"model_building\": {\n",
+    "        \"params\": {\n",
+    "            ...\n",
+    "        }\n",
+    "    }\n",
+    "}"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 53,
+   "id": "908e4c24",
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "ValueError",
+     "evalue": "not enough values to unpack (expected 2, got 0)",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mValueError\u001b[0m                                Traceback (most recent call last)",
+      "Input \u001b[0;32mIn [53]\u001b[0m, in \u001b[0;36m<cell line: 1>\u001b[0;34m()\u001b[0m\n\u001b[0;32m----> 1\u001b[0m pipeline \u001b[38;5;241m=\u001b[39m \u001b[43mPipeline\u001b[49m\u001b[43m(\u001b[49m\u001b[43msteps\u001b[49m\u001b[38;5;241;43m=\u001b[39;49m\u001b[43mpipeline_steps\u001b[49m\u001b[43m)\u001b[49m\n",
+      "File \u001b[0;32m~/opt/anaconda3/lib/python3.9/site-packages/sklearn/pipeline.py:148\u001b[0m, in \u001b[0;36mPipeline.__init__\u001b[0;34m(self, steps, memory, verbose)\u001b[0m\n\u001b[1;32m    146\u001b[0m \u001b[38;5;28mself\u001b[39m\u001b[38;5;241m.\u001b[39mmemory \u001b[38;5;241m=\u001b[39m memory\n\u001b[1;32m    147\u001b[0m \u001b[38;5;28mself\u001b[39m\u001b[38;5;241m.\u001b[39mverbose \u001b[38;5;241m=\u001b[39m verbose\n\u001b[0;32m--> 148\u001b[0m \u001b[38;5;28;43mself\u001b[39;49m\u001b[38;5;241;43m.\u001b[39;49m\u001b[43m_validate_steps\u001b[49m\u001b[43m(\u001b[49m\u001b[43m)\u001b[49m\n",
+      "File \u001b[0;32m~/opt/anaconda3/lib/python3.9/site-packages/sklearn/pipeline.py:192\u001b[0m, in \u001b[0;36mPipeline._validate_steps\u001b[0;34m(self)\u001b[0m\n\u001b[1;32m    191\u001b[0m \u001b[38;5;28;01mdef\u001b[39;00m \u001b[38;5;21m_validate_steps\u001b[39m(\u001b[38;5;28mself\u001b[39m):\n\u001b[0;32m--> 192\u001b[0m     names, estimators \u001b[38;5;241m=\u001b[39m \u001b[38;5;28mzip\u001b[39m(\u001b[38;5;241m*\u001b[39m\u001b[38;5;28mself\u001b[39m\u001b[38;5;241m.\u001b[39msteps)\n\u001b[1;32m    194\u001b[0m     \u001b[38;5;66;03m# validate names\u001b[39;00m\n\u001b[1;32m    195\u001b[0m     \u001b[38;5;28mself\u001b[39m\u001b[38;5;241m.\u001b[39m_validate_names(names)\n",
+      "\u001b[0;31mValueError\u001b[0m: not enough values to unpack (expected 2, got 0)"
+     ]
+    }
+   ],
+   "source": [
+    "pipeline = Pipeline(steps=pipeline_steps)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 54,
+   "id": "a94380b8",
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "KeyError",
+     "evalue": "'data'",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mKeyError\u001b[0m                                  Traceback (most recent call last)",
+      "Input \u001b[0;32mIn [54]\u001b[0m, in \u001b[0;36m<cell line: 2>\u001b[0;34m()\u001b[0m\n\u001b[1;32m      1\u001b[0m \u001b[38;5;66;03m# Train the model using the data in the config\u001b[39;00m\n\u001b[0;32m----> 2\u001b[0m X_train \u001b[38;5;241m=\u001b[39m \u001b[43mconfig\u001b[49m\u001b[43m[\u001b[49m\u001b[38;5;124;43m'\u001b[39;49m\u001b[38;5;124;43mdata\u001b[39;49m\u001b[38;5;124;43m'\u001b[39;49m\u001b[43m]\u001b[49m[\u001b[38;5;124m'\u001b[39m\u001b[38;5;124mX_train\u001b[39m\u001b[38;5;124m'\u001b[39m]\n\u001b[1;32m      3\u001b[0m y_train \u001b[38;5;241m=\u001b[39m config[\u001b[38;5;124m'\u001b[39m\u001b[38;5;124mdata\u001b[39m\u001b[38;5;124m'\u001b[39m][\u001b[38;5;124m'\u001b[39m\u001b[38;5;124my_train\u001b[39m\u001b[38;5;124m'\u001b[39m]\n\u001b[1;32m      4\u001b[0m pipeline\u001b[38;5;241m.\u001b[39mfit(X_train, y_train)\n",
+      "\u001b[0;31mKeyError\u001b[0m: 'data'"
+     ]
+    }
+   ],
+   "source": [
+    "# Train the model using the data in the config\n",
+    "X_train = config['data']['X_train']\n",
+    "y_train = config['data']['y_train']\n",
+    "pipeline.fit(X_train, y_train)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 55,
+   "id": "ba98f260",
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "KeyError",
+     "evalue": "'data'",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mKeyError\u001b[0m                                  Traceback (most recent call last)",
+      "Input \u001b[0;32mIn [55]\u001b[0m, in \u001b[0;36m<cell line: 1>\u001b[0;34m()\u001b[0m\n\u001b[0;32m----> 1\u001b[0m X_test \u001b[38;5;241m=\u001b[39m \u001b[43mconfig\u001b[49m\u001b[43m[\u001b[49m\u001b[38;5;124;43m'\u001b[39;49m\u001b[38;5;124;43mdata\u001b[39;49m\u001b[38;5;124;43m'\u001b[39;49m\u001b[43m]\u001b[49m[\u001b[38;5;124m'\u001b[39m\u001b[38;5;124mX_test\u001b[39m\u001b[38;5;124m'\u001b[39m]\n\u001b[1;32m      2\u001b[0m y_test \u001b[38;5;241m=\u001b[39m config[\u001b[38;5;124m'\u001b[39m\u001b[38;5;124mdata\u001b[39m\u001b[38;5;124m'\u001b[39m][\u001b[38;5;124m'\u001b[39m\u001b[38;5;124my_test\u001b[39m\u001b[38;5;124m'\u001b[39m]\n\u001b[1;32m      3\u001b[0m y_pred \u001b[38;5;241m=\u001b[39m pipeline\u001b[38;5;241m.\u001b[39mpredict(X_test)\n",
+      "\u001b[0;31mKeyError\u001b[0m: 'data'"
+     ]
+    }
+   ],
+   "source": [
+    "X_test = config['data']['X_test']\n",
+    "y_test = config['data']['y_test']\n",
+    "y_pred = pipeline.predict(X_test)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 61,
+   "id": "4ce123b8",
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "NameError",
+     "evalue": "name 'true' is not defined",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mNameError\u001b[0m                                 Traceback (most recent call last)",
+      "Input \u001b[0;32mIn [61]\u001b[0m, in \u001b[0;36m<cell line: 1>\u001b[0;34m()\u001b[0m\n\u001b[1;32m      1\u001b[0m target:{\n\u001b[1;32m      2\u001b[0m     \u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mprediction_type\u001b[39m\u001b[38;5;124m\"\u001b[39m: \u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mRegression\u001b[39m\u001b[38;5;124m\"\u001b[39m,\n\u001b[1;32m      3\u001b[0m      \u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mtarget\u001b[39m\u001b[38;5;124m\"\u001b[39m: \u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mpetal_width\u001b[39m\u001b[38;5;124m\"\u001b[39m, \n\u001b[1;32m      4\u001b[0m     \u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mtype\u001b[39m\u001b[38;5;124m\"\u001b[39m: \u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mregression\u001b[39m\u001b[38;5;124m\"\u001b[39m, \n\u001b[0;32m----> 5\u001b[0m     \u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mpartioning\u001b[39m\u001b[38;5;124m\"\u001b[39m: \u001b[43mtrue\u001b[49m\n\u001b[1;32m      6\u001b[0m }\n",
+      "\u001b[0;31mNameError\u001b[0m: name 'true' is not defined"
+     ]
+    }
+   ],
+   "source": [
+    "\n",
+    "target:{\n",
+    "    \"prediction_type\": \"Regression\",\n",
+    "     \"target\": \"petal_width\", \n",
+    "    \"type\": \"regression\", \n",
+    "    \"partioning\": true\n",
+    "}"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 116,
+   "id": "05a0be49",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>sepal_length</th>\n",
+       "      <th>sepal_width</th>\n",
+       "      <th>petal_length</th>\n",
+       "      <th>petal_width</th>\n",
+       "      <th>species</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>5.1</td>\n",
+       "      <td>3.5</td>\n",
+       "      <td>1.4</td>\n",
+       "      <td>0.2</td>\n",
+       "      <td>Iris-setosa</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>4.9</td>\n",
+       "      <td>3.0</td>\n",
+       "      <td>1.4</td>\n",
+       "      <td>0.2</td>\n",
+       "      <td>Iris-setosa</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>4.7</td>\n",
+       "      <td>3.2</td>\n",
+       "      <td>1.3</td>\n",
+       "      <td>0.2</td>\n",
+       "      <td>Iris-setosa</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>4.6</td>\n",
+       "      <td>3.1</td>\n",
+       "      <td>1.5</td>\n",
+       "      <td>0.2</td>\n",
+       "      <td>Iris-setosa</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>5.0</td>\n",
+       "      <td>3.6</td>\n",
+       "      <td>1.4</td>\n",
+       "      <td>0.2</td>\n",
+       "      <td>Iris-setosa</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   sepal_length  sepal_width  petal_length  petal_width      species\n",
+       "0           5.1          3.5           1.4          0.2  Iris-setosa\n",
+       "1           4.9          3.0           1.4          0.2  Iris-setosa\n",
+       "2           4.7          3.2           1.3          0.2  Iris-setosa\n",
+       "3           4.6          3.1           1.5          0.2  Iris-setosa\n",
+       "4           5.0          3.6           1.4          0.2  Iris-setosa"
+      ]
+     },
+     "execution_count": 116,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df=pd.read_csv('Iris.csv')\n",
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 117,
+   "id": "b209ac6e",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "X=df.drop(['species'],axis=1)\n",
+    "y=df['species']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 137,
+   "id": "7efb3fc0",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "Xtrain,Xtest,ytrain,ytest = train_test_split(X,y,test_size=0.2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 138,
+   "id": "94b4641f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "clf= DecisionTreeClassifier()\n",
+    "model=clf.fit(Xtrain,ytrain)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 139,
+   "id": "45c1567a",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<Figure size 1800x648 with 0 Axes>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "import matplotlib.pyplot as plt\n",
+    "fig= plt.figure(figsize=(25,9))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 143,
+   "id": "f660d445",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import matplotlib.pyplot as plt"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 147,
+   "id": "cbb97229",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Collecting graphviz\n",
+      "  Downloading graphviz-0.20.1-py3-none-any.whl (47 kB)\n",
+      "\u001b[K     |████████████████████████████████| 47 kB 2.1 MB/s eta 0:00:01\n",
+      "\u001b[?25hInstalling collected packages: graphviz\n",
+      "Successfully installed graphviz-0.20.1\n",
+      "Note: you may need to restart the kernel to use updated packages.\n"
+     ]
+    }
+   ],
+   "source": [
+    "pip install graphviz"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 149,
+   "id": "d7894d9a",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Actual</th>\n",
+       "      <th>Predicted</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>Iris-virginica</td>\n",
+       "      <td>Iris-virginica</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>Iris-versicolor</td>\n",
+       "      <td>Iris-versicolor</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>Iris-setosa</td>\n",
+       "      <td>Iris-setosa</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>Iris-virginica</td>\n",
+       "      <td>Iris-virginica</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>Iris-virginica</td>\n",
+       "      <td>Iris-virginica</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "            Actual        Predicted\n",
+       "0   Iris-virginica   Iris-virginica\n",
+       "1  Iris-versicolor  Iris-versicolor\n",
+       "2      Iris-setosa      Iris-setosa\n",
+       "3   Iris-virginica   Iris-virginica\n",
+       "4   Iris-virginica   Iris-virginica"
+      ]
+     },
+     "execution_count": 149,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "y_pred=clf.predict(Xtest)\n",
+    "\n",
+    "Prediction= pd.DataFrame(y_pred)\n",
+    "Prediction.columns=['Predicted']\n",
+    "Prediction.head()\n",
+    "\n",
+    "Actual= pd.DataFrame(ytest)\n",
+    "Actual.columns=['Actual']\n",
+    "Actual=Actual.reset_index()\n",
+    "Actual.head()\n",
+    "\n",
+    "Actual.drop('index',axis=1,inplace=True)\n",
+    "\n",
+    "compare=pd.concat([Actual,Prediction],axis=1)\n",
+    "compare.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 150,
+   "id": "45f823e0",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "100.0\n"
+     ]
+    }
+   ],
+   "source": [
+    "unmatched= compare[compare['Actual']!=compare['Predicted']]['Actual'].value_counts().sum()\n",
+    "\n",
+    "matched= compare[compare['Actual']==compare['Predicted']]['Actual'].value_counts().sum()\n",
+    "\n",
+    "Accuracy= (matched/len(compare['Actual']))*100\n",
+    "print(Accuracy)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 151,
+   "id": "f368ee20",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "1.0"
+      ]
+     },
+     "execution_count": 151,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "score= accuracy_score(ytest,y_pred)\n",
+    "score"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "12abc588",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c95287f4",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "8b56e706",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "dca3b470",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "cf2a90d7",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9f621fa5",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5800dd85",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "628d7b3b",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "537ad96e",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "96fd3641",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "80291577",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "69b48550",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "42624b1e",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e6b744e6",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1fd19c80",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7f3c64c1",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a78351c2",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.12"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
